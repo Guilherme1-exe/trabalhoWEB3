@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
-# Config
+# Configurações básicas
 APP_SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', 'troque_esta_chave_para_producao')  # troque em produção
 ADMIN_USERNAME = os.environ.get('ADMIN_USER', 'admin')
 # Senha padrão: 'senha123' — Mude usando variável de ambiente ADMIN_PASS ou altere aqui.
@@ -13,9 +13,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = APP_SECRET_KEY
 DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'database.db')
 
-# Armazenamos o hash da senha no runtime (pode ser substituído por um hash fixo)
+# Armazenamos o hash da senha no runtime
 ADMIN_PASSWORD_HASH = generate_password_hash(DEFAULT_ADMIN_PASSWORD)
 
+
+# ----------- Banco de Dados -----------
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -48,12 +50,7 @@ def close_connection(exception):
         db.close()
 
 
-@app.before_first_request
-def initialize():
-    init_db()
-
-
-# ---------- Rotas ----------
+# ----------- Rotas -----------
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -142,7 +139,7 @@ def delete_entry(entry_id):
     return redirect(url_for('admin'))
 
 
-# Rota opcional para exportar CSV (útil para a apresentação)
+# Exportar CSV
 @app.route('/export.csv')
 @login_required
 def export_csv():
@@ -163,6 +160,12 @@ def export_csv():
     return Response(output, mimetype="text/csv", headers={"Content-Disposition":"attachment;filename=interessados.csv"})
 
 
+# ----------- Main -----------
+
 if __name__ == '__main__':
-    # Modo debug = True facilita apresentação local. Em produção, use debug=False e uma SECRET_KEY forte.
+    # Inicializa o banco logo no início (compatível com Flask 3.x)
+    with app.app_context():
+        init_db()
+
+    # Modo debug facilita a apresentação
     app.run(debug=True)
