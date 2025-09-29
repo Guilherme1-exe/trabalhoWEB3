@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero -->
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-3">
+    <h1 class="display-5 fw-bold">Nossa ONG</h1>
+    <p class="col-md-8 fs-5">Trabalhamos por uma causa social importante. Conheça nossos projetos e participe!</p>
+    <a class="btn btn-primary btn-lg" href="#contato">Quero Ajudar</a>
+  </div>
+</div>
+
+<!-- Sobre -->
+<section id="sobre" class="mb-5">
+  <h2>Sobre a ONG</h2>
+  <p>Breve descrição sobre a ONG, missão, visão e valores. Aqui você explica o propósito do trabalho.</p>
+</section>
+
+<!-- Projetos -->
+<section id="projetos" class="mb-5">
+  <h2>Projetos</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Projeto A</h5>
+          <p class="card-text">Descrição curta do projeto A.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Projeto B</h5>
+          <p class="card-text">Descrição curta do projeto B.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Como Ajudar -->
+<section id="ajudar" class="mb-5">
+  <h2>Como Ajudar</h2>
+  <ul>
+    <li>Voluntariado</li>
+    <li>Doações</li>
+    <li>Parcerias</li>
+  </ul>
+</section>
+
+<!-- Contato / Formulário -->
+<section id="contato" class="mb-5">
+  <h2>Formulário de Interesse</h2>
+  <form method="post" action="{{ url_for('index') }}">
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome *</label>
+      <input type="text" class="form-control" id="nome" name="nome" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail *</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="tipo" class="form-label">Tipo de interesse *</label>
+      <select class="form-select" id="tipo" name="tipo" required>
+        <option value="">-- selecione --</option>
+        <option value="voluntario">Voluntário</option>
+        <option value="doador">Doador</option>
+        <option value="parceiro">Parceiro</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="mensagem" class="form-label">Mensagem</label>
+      <textarea class="form-control" id="mensagem" name="mensagem" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Enviar</button>
+  </form>
+</section>
+{% endblock %}
