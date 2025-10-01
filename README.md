@@ -3,7 +3,7 @@
 
 # 🌱 ONG – Projeto extensionista da materia de Desenvolvimento web 3.
 
-Este projeto é uma **landing page para ONG** feita em **Python + Flask + SQLite**, com formulário para interessados e área administrativa protegida por login.
+Este projeto é uma **landing page para ONG Coletivo Cultural Olhar da Perifa** feita em **Python + Flask + SQLite**, com formulário para interessados e área administrativa protegida por login.
 
 ---
 
