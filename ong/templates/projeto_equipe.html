@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="h3" style="font-family: var(--fonte-titulo); color: var(--cor-roxo-ong);">
+      Gerenciando Equipe
+    </h2>
+    <h4 class="text-muted">{{ projeto.titulo }}</h4>
+  </div>
+  <a class="btn btn-outline-secondary" href="{{ url_for('admin') }}">
+    &larr; Voltar para Admin
+  </a>
+</div>
+
+<!-- Cartão: Definir Líder -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="card-title">Líder do Projeto</h4>
+    <p class="mb-2">
+      Líder Atual: 
+      <strong>
+        {% if projeto.nome_lider %}
+          {{ projeto.nome_lider }}
+        {% else %}
+          <span class="text-muted">Nenhum definido</span>
+        {% endif %}
+      </strong>
+    </p>
+
+    <!-- Formulário para Definir/Trocar Líder -->
+    <form action="{{ url_for('admin_set_lider', projeto_id=projeto.id) }}" method="POST">
+      <label for="lider_id" class="form-label">Selecionar Novo Líder:</label>
+      <div class="input-group">
+        <select class="form-select" name="lider_id" id="lider_id">
+          <option value="0">-- Nenhum (Remover Líder) --</option>
+          {% for membro in all_membros %}
+            <option value="{{ membro.id }}" {% if membro.id == projeto.lider_membro_id %}selected{% endif %}>
+              {{ membro.nome }} ({{ membro.email }})
+            </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-success">Salvar Líder</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Cartão: Gerenciar Membros da Equipe -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="card-title">Equipe do Projeto</h4>
+    
+    <!-- Formulário para Adicionar Membro -->
+    <form action="{{ url_for('admin_add_membro_projeto', projeto_id=projeto.id) }}" method="POST" class="border-bottom pb-3 mb-3">
+      <label for="membro_id" class="form-label">Adicionar Membro à Equipe:</label>
+      <div class="input-group">
+        <select class="form-select" name="membro_id" id="membro_id">
+          <option value="">-- Selecione um membro para adicionar --</option>
+          {% for membro in membros_disponiveis %}
+            <option value="{{ membro.id }}">
+              {{ membro.nome }} ({{ membro.email }})
+            </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-success">Adicionar</button>
+      </div>
+      {% if not membros_disponiveis %}
+        <small class="text-muted">Todos os membros já estão nesta equipe.</small>
+      {% endif %}
+    </form>
+
+    <!-- Lista de Membros Atuais -->
+    <h5>Membros Atuais na Equipe</h5>
+    {% if equipe_atual %}
+      <ul class="list-group">
+        {% for membro_equipe in equipe_atual %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ membro_equipe.nome }}</strong>
+              {% if membro_equipe.id == projeto.lider_membro_id %}
+                <span class="badge bg-primary" style="background-color: var(--cor-roxo-ong) !important;">Líder</span>
+              {% endif %}
+              <br>
+              <small class="text-muted">{{ membro_equipe.email }}</small>
+            </div>
+            <!-- Formulário para Remover Membro -->
+            <form action="{{ url_for('admin_remove_membro_projeto', projeto_id=projeto.id, membro_id=membro_equipe.id) }}" method="POST" onsubmit="return confirm('Remover {{ membro_equipe.nome }} deste projeto?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Remover</trbu>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Nenhum membro nesta equipe ainda. Adicione um acima.</p>
+    {% endif %}
+    
+  </div>
+</div>
+
+{% endblock %}

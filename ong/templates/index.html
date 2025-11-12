@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Carrossel Hero (agora é seu próprio card) -->
+<div class="content-section">
+  {% if carousel_images %}
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        {% for image in carousel_images %}
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{{ 'active' if loop.first }}" aria-current="{{ 'true' if loop.first }}" aria-label="Slide {{ loop.index }}"></button>
+        {% endfor %}
+      </div>
+      <div class="carousel-inner">
+        {% for image in carousel_images %}
+          <div class="carousel-item {{ 'active' if loop.first }}">
+            <img src="{{ url_for('static', filename='uploads/' + image) }}" class="d-block w-100" alt="Foto do Coletivo {{ loop.index }}">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Coletivo Cultural Olhar da Perifa</h5>
+              <p>Conheça nossos projetos e participe!</p>
+              <a class="btn btn-primary btn-lg" href="#ajudar">Quero Ajudar</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  {% else %}
+    <!-- Fallback se não houver imagens -->
+    <div class="p-5 bg-light rounded-3"> <!-- bg-light removido pelo style.css, mas mantido por segurança -->
+      <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold">Nossa ONG</h1>
+        <p class="col-md-8 fs-5"> O Coletivo Cultural Olhar da Perifa nasceu em Junho de 2022 através de um projeto de fotografia para jovens da rede pública de ensino.
+          Trabalhamos por uma causa social importante. Conheça nossos projetos e participe!</p>
+        <a class="btn btn-primary btn-lg" href="#ajudar">Quero Ajudar</a>
+      </div>
+    </div>
+  {% endif %}
+</div>
+<!-- Fim do Carrossel -->
+
+
+<!-- Sobre (NOVO LAYOUT 50/50 e card próprio) -->
+<section id="sobre" class="content-section">
+  <h2>Sobre a ONG</h2>
+  
+  <div class="row align-items-center g-4 mt-1"> <!-- mt-1 (era mt-3) -->
+    <!-- Coluna da Imagem (AGORA DINÂMICA) -->
+    <div class="col-lg-6">
+      
+      {% if sobre_data.imagem_filename %}
+        <!-- Se o admin subiu uma imagem, usa ela -->
+        <img src="{{ url_for('static', filename='uploads/' + sobre_data.imagem_filename) }}" 
+             class="img-fluid rounded-3 shadow-sm" 
+             alt="Foto da equipe Olhar da Perifa">
+      {% else %}
+        <!-- Senão, usa o placeholder -->
+        <img src="https://placehold.co/600x450/8B0099/FFFFFF?text=Foto+da+Equipe" 
+             class="img-fluid rounded-3 shadow-sm" 
+             alt="Foto da equipe Olhar da Perifa"
+             title="O cliente poderá trocar esta foto em breve">
+      {% endif %}
+      
+    </div>
+    <!-- Coluna do Texto -->
+    <div class="col-lg-6">
+      <p class="texto-sobre mb-0">{{ sobre_data.texto }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Projetos (AGORA DINÂMICO e card próprio) -->
+<section id="projetos" class="content-section">
+  <h2>Projetos</h2>
+  
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-1"> <!-- mt-1 (era g-4) -->
+    {% if projetos %}
+      {% for projeto in projetos %}
+        <div class="col">
+          <!-- O "Card de Projeto" com a classe para o hover -->
+          <div class="projeto-card">
+            <!-- Imagem de fundo -->
+            <img src="{{ url_for('static', filename='uploads/projetos/' + projeto.imagem_filename) }}" alt="{{ projeto.titulo }}" class="projeto-imagem">
+            <!-- Overlay com a descrição (aparece no hover) -->
+            <div class="projeto-overlay">
+              <h3 class="projeto-titulo">{{ projeto.titulo }}</h3>
+              <p class="projeto-descricao">{{ projeto.descricao }}</p>
+            </div>
+            <!-- Título visível (sem hover) -->
+            <h5 class="projeto-titulo-visivel">{{ projeto.titulo }}</h5>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <p>Nenhum projeto cadastrado no momento. Volte em breve!</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+<!-- Fim dos Projetos -->
+
+
+<!-- Seção "Como Ajudar" (Unificada e card próprio) -->
+<section id="ajudar" class="content-section">
+  <h2>Como Ajudar</h2>
+  
+  <!-- 1. Ícones (O que você pediu) -->
+  <div class="row text-center mb-5 mt-4">
+    
+    <!-- Bloco Voluntário -->
+    <div class="col-md-4 ajudar-bloco">
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.04 3 5.5l7 7Z"/>
+        <path d="M12 5.36c.88-.8 2.3-1.86 3.4-1.86A3.3 3.3 0 0 1 19 6.8c0 1.9-1.1 3.2-2.3 4.5L12 15.8 7.3 11.3C6.1 10 5 8.7 5 6.8a3.3 3.3 0 0 1 3.5-3.3c1.1 0 2.5 1.06 3.4 1.86Z"/>
+      </svg>
+      <h4 class="ajudar-titulo">Seja Voluntário</h4>
+      <p>Doe seu tempo e talento em nossas oficinas, eventos e ações sociais.</p>
+    </div>
+    
+    <!-- Bloco Doações -->
+    <div class="col-md-4 ajudar-bloco">
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 6v12"/>
+        <path d="M16 10s-2 1.5-4 0-4 0-4 0"/>
+        <path d="M16 14s-2 1.5-4 0-4 0-4 0"/>
+      </svg>
+      <h4 class="ajudar-titulo">Faça uma Doação</h4>
+      <p>Sua contribuição financia materiais, lanches e transporte para os alunos.</p>
+    </div>
+    
+    <!-- Bloco Parceria -->
+    <div class="col-md-4 ajudar-bloco">
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 18.25a2.5 2.5 0 0 0-2.3-2.48c-1.4-.13-2.6-.9-3.2-2.12a2.5 2.5 0 0 0-4.18-2.08L3 16.25"/>
+        <path d="m3 14 3 3 3-3"/>
+        <path d="M6 18.25a2.5 2.5 0 0 1 2.3-2.48c1.4-.13-2.6-.9-3.2-2.12a2.5 2.5 0 0 1 4.18-2.08L21 16.25"/>
+        <path d="m21 14-3 3-3-3"/>
+      </svg>
+      <h4 class="ajudar-titulo">Seja um Parceiro</h4>
+      <p>Sua empresa pode patrocinar projetos, doar equipamentos ou apoiar eventos.</p>
+    </div>
+  </div>
+  
+  <!-- 2. Formulário (Integrado) -->
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      
+      <h3 class="text-center mb-4 mt-3" style="font-family: var(--fonte-titulo); color: var(--cor-roxo-ong); font-size: 2.2rem;">Formulário de Interesse</h3>
+      
+      <form method="post" action="{{ url_for('index') }}">
+        <div class="mb-3">
+          <label for="nome" class="form-label">Nome *</label>
+          <input type="text" class="form-control" id="nome" name="nome" required>
+        </div>
+    
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail *</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+    
+        <div class="mb-3">
+          <label for="tipo" class="form-label">Tipo de interesse *</label>
+          <select class="form-select" id="tipo" name="tipo" required>
+            <option value="">-- selecione --</option>
+            <option value="voluntario">Voluntário</option>
+            <option value="doador">Doador</option>
+            <option value="parceiro">Parceiro</option>
+          </select>
+        </div>
+    
+        <div class="mb-3">
+          <label for="mensagem" class="form-label">Mensagem (opcional)</label>
+          <textarea class="form-control" id="mensagem" name="mensagem" rows="4"></textarea>
+        </div>
+    
+        <div class="text-center">
+          <button type="submit" class="btn btn-success btn-lg px-5">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<!-- Fim da Seção "Como Ajudar" -->
+
+
+<!-- NOVA Seção "Contatos" (e card próprio) -->
+<section id="contatos" class="content-section">
+  <h2>Contatos</h2>
+  
+  <div class="row text-center mb-4 mt-4">
+    
+    <!-- Bloco Endereço -->
+    <div class="col-md-4 ajudar-bloco">
+      <!-- Ícone de Mapa (Map Pin) -->
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <h4 class="ajudar-titulo">Endereço</h4>
+      <p>{{ contatos.endereco }}</p>
+    </div>
+    
+    <!-- Bloco E-mail -->
+    <div class="col-md-4 ajudar-bloco">
+      <!-- Ícone de E-mail (Envelope) -->
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="20" height="16" x="2" y="4" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      </svg>
+      <h4 class="ajudar-titulo">E-mail</h4>
+      <p>{{ contatos.email }}</p>
+    </div>
+    
+    <!-- Bloco Telefones -->
+    <div class="col-md-4 ajudar-bloco">
+      <!-- Ícone de Telefone (Phone) -->
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+      <h4 class="ajudar-titulo">Telefones</h4>
+      
+      <!-- Lógica para exibir múltiplos telefones -->
+      {% if contatos.telefones %}
+        {% for tel in contatos.telefones.split(',') %}
+          <p class="mb-1">{{ tel.strip() }}</p> <!-- .strip() remove espaços extras -->
+        {% endfor %}
+      {% else %}
+        <p>Nenhum telefone cadastrado.</p>
+      {% endif %}
+    </div>
+    
+  </div>
+</section>
+<!-- Fim da Seção "Contatos" -->
+
+{% endblock %}
