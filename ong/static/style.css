@@ -1,11 +1,341 @@
-body {
-  padding-bottom: 60px;
+/* ===================================
+   Carregamento da Fonte Personalizada
+   =================================== */
+@font-face {
+  font-family: 'GraffitiYouth';
+  /* O arquivo DEVE estar em 'ong/static/fonts/' */
+  src: url('fonts/Urban-Nation.ttf') format('truetype'),
+       url('fonts/Urban-Nation.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.card .card-title {
-  margin-bottom: 0.5rem;
-}
 
+/* Estilos originais (para a tabela do admin) */
 table td {
   vertical-align: middle;
+}
+
+/* ===================================
+   Novos Estilos - Fundo Amarelo
+   =================================== */
+
+:root {
+  --cor-roxo-ong: #8B0099;
+  --cor-roxo-escuro: #8B0099;
+  --cor-amarelo-ong: #FEDA02;
+  --cor-branco: #FFFFFF;
+  --cor-texto-escuro: #212529; /* Preto suave */
+  
+  /* Definindo a nova fonte dos títulos */
+  --fonte-titulo: 'GraffitiYouth', sans-serif;
+  /* NOVO: Fonte padrão para textos */
+  --fonte-corpo: 'Inter', sans-serif;
+}
+
+/* 1. Fundo do site (Body) em Amarelo Vibrante */
+body {
+  background-color: var(--cor-amarelo-ong);
+  color: var(--cor-texto-escuro); /* Cor padrão do texto */
+  /* NOVO: Define a fonte padrão limpa para o site */
+  font-family: var(--fonte-corpo);
+}
+
+/* 2. Navbar e Rodapé em Roxo */
+.navbar.bg-primary,
+footer.bg-light {
+  background-color: var(--cor-roxo-ong) !important;
+}
+
+/* 3. Textos da Navbar e Rodapé em Branco */
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link,
+footer.bg-light,
+footer.bg-light small {
+  color: var(--cor-branco) !important;
+  font-weight: 500;
+}
+.navbar-dark .navbar-brand:hover,
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgba(255, 255, 255, 0.75) !important; /* Branco com transparência */
+}
+
+/* 3b. Ícone do menu "hambúrguer" em branco (mobile) */
+.navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.navbar-dark .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 3c. Aplicando a fonte ao Título da Navbar */
+.navbar-dark .navbar-brand {
+  font-family: var(--fonte-titulo);
+  font-size: 1.6rem; /* Ajuste o tamanho conforme necessário */
+  letter-spacing: 1px;
+}
+
+
+/* 4. MUDANÇA (IDEIA 1): Removido o fundo branco do container principal */
+.p-5.bg-light, /* Hero da home */
+.card { /* Card de login, cards de projeto */
+  /* O container principal não é mais branco */
+  background-color: var(--cor-branco) !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* 5. Ajustes no Container principal (padding mantido) */
+.container.my-5 {
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
+  /* REMOVIDO: background-color: var(--cor-branco) !important; */
+}
+
+/* NOVO (IDEIA 1): "Vibe de Zine" - Cada seção vira um card */
+.content-section {
+  background-color: var(--cor-branco);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 2.5rem;
+  margin-bottom: 2rem; /* Espaçamento entre os "recortes" */
+}
+/* O carrossel não precisa de padding interno */
+.content-section:has(div#heroCarousel) {
+  padding: 0;
+  overflow: hidden; /* Para os cantos arredondados do carrossel */
+}
+
+
+/* 6. O Hero (que está dentro do container branco) não precisa mais de fundo */
+.p-5.bg-light {
+  background-color: transparent !important;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 1rem 0 !important;
+}
+/* O fallback do Hero (sem imagem) precisa de padding */
+.content-section:has(.p-5.bg-light) {
+  padding: 2.5rem;
+}
+
+
+/* 6b. Aplicando a fonte ao Título "Nossa ONG" */
+.p-5.bg-light h1.display-5 {
+  color: var(--cor-roxo-ong);
+  font-weight: bold;
+  font-family: var(--fonte-titulo); /* <-- FONTE APLICADA */
+  font-size: 3.5rem; /* Ajuste o tamanho */
+}
+
+
+/* 7. Botões (Todos) em Roxo */
+.btn-primary,
+.btn-success {
+  background-color: var(--cor-roxo-ong);
+  border-color: var(--cor-roxo-ong);
+  color: var(--cor-branco);
+  font-weight: 500;
+}
+.btn-primary:hover,
+.btn-success:hover {
+  background-color: var(--cor-roxo-escuro); 
+  border-color: var(--cor-roxo-escuro);
+  color: var(--cor-branco);
+}
+
+/* 8. MUDANÇA (IDEIA 2): Títulos das Seções com Rabisco */
+section h2,
+.card-title { /* Título do Login, Sobre, Projetos, etc. */
+  color: var(--cor-roxo-ong);
+  font-weight: bold;
+  font-family: var(--fonte-titulo); /* <-- FONTE APLICADA */
+  letter-spacing: 1px; /* Ajuda na leitura de fontes de graffiti */
+}
+section h2 {
+  /* REVERTIDO: Voltamos para a borda sólida */
+  border-bottom: 3px solid var(--cor-roxo-ong);
+  padding-bottom: 10px; /* Espaço original */
+  margin-bottom: 20px;
+  
+  /* REMOVIDO: Sublinhado de "rabisco" roxo 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8'%3E%3Cpath fill='%238B0099' d='M0,3 Q25,0,50,4 T100,3 L100,6 Q75,8,50,4 T0,5 Z' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  background-size: 100% auto;
+  */
+}
+
+/* ===================================
+   Estilos do Carrossel (Hero)
+   =================================== */
+.carousel-item {
+  /* Define uma altura máxima para o carrossel */
+  /* Ajuste 500px para o que ficar melhor */
+  max-height: 500px; 
+  background-color: #333; /* Fundo escuro para o caso da imagem demorar */
+}
+.carousel-item img {
+  /* Garante que a imagem cubra o espaço */
+  object-fit: cover; 
+  width: 100%;
+  height: 500px;
+  opacity: 0.8; /* Leve escurcida na imagem */
+  
+  /* NOVO (IDEIA 3): Filtro de foto */
+  filter: grayscale(20%) contrast(110%);
+}
+.carousel-caption h5 {
+  font-family: var(--fonte-titulo);
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+.carousel-caption p {
+  font-size: 1.2rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+
+/* ===================================
+   Estilos dos Projetos
+   =================================== */
+
+.projeto-card {
+  position: relative; /* Base para o overlay */
+  overflow: hidden; /* Garante que nada vaze */
+  border-radius: 12px; /* Cantos arredondados */
+  
+  /* MUDANÇA (IDEIA 4): Sombra "dura" */
+  box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+  
+  transition: all 0.3s ease-in-out; /* Animação suave */
+  cursor: pointer;
+  height: 250px; /* Altura fixa para os cards */
+  background-color: var(--cor-texto-escuro); /* Fundo escuro */
+}
+
+.projeto-imagem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cobre o espaço sem distorcer */
+  transition: all 0.3s ease-in-out;
+  opacity: 0.7; /* Leve transparência na imagem */
+
+  /* NOVO (IDEIA 3): Filtro de foto */
+  filter: grayscale(20%) contrast(110%);
+}
+
+.projeto-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(139, 0, 153, 0.9); /* Roxo 90% transparente */
+  color: var(--cor-branco);
+  
+  /* Esconde por padrão */
+  opacity: 0;
+  
+  /* Centraliza o texto */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  
+  transition: all 0.3s ease-in-out;
+}
+
+.projeto-titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.projeto-descricao {
+  font-size: 0.9rem;
+}
+
+/* O título que fica visível SEM o hover */
+.projeto-titulo-visivel {
+  font-family: var(--fonte-titulo);
+  color: var(--cor-branco);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  font-size: 1.8rem;
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  right: 20px;
+  text-align: left;
+  transition: all 0.2s ease-in-out;
+}
+
+
+/* --- A MÁGICA DO HOVER --- */
+
+.projeto-card:hover {
+  /* 1. "Amplia" o card */
+  transform: scale(1.05); 
+  z-index: 10;
+  
+  /* MUDANÇA (IDEIA 4): Sombra "dura" no hover */
+  box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
+}
+
+.projeto-card:hover .projeto-imagem {
+  /* 2. Dá um leve zoom e remove a transparência da imagem */
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.projeto-card:hover .projeto-overlay {
+  /* 3. Mostra o overlay roxo com o texto */
+  opacity: 1;
+}
+
+.projeto-card:hover .projeto-titulo-visivel {
+  /* 4. Esconde o título de baixo */
+  opacity: 0;
+}
+
+/* ===================================
+   REGRA: Texto "Sobre"
+   =================================== */
+.texto-sobre {
+  /* Isso faz o navegador respeitar as quebras de linha (Enter)
+     e também quebra o texto se ele for muito longo */
+  white-space: pre-wrap;
+  
+  /* Estilos de texto padrão */
+  font-size: 1rem;
+  line-height: 1.6;
+  /* NOVO: Garante que o parágrafo use a fonte do corpo, e não a de graffiti */
+  font-family: var(--fonte-corpo);
+}
+
+/* ===================================
+   NOVOS ESTILOS: Seção "Como Ajudar"
+   =================================== */
+.ajudar-bloco {
+  /* Para garantir que fiquem bem em telas menores */
+  margin-bottom: 2rem;
+}
+
+.ajudar-icon {
+  /* Define o tamanho do ícone SVG */
+  width: 70px;
+  height: 70px;
+  /* Pinta o ícone de roxo */
+  stroke: var(--cor-roxo-ong);
+  margin-bottom: 1rem;
+}
+
+.ajudar-titulo {
+  /* Usa a fonte de graffiti */
+  font-family: var(--fonte-titulo);
+  color: var(--cor-roxo-ong);
+  font-size: 1.8rem;
+  letter-spacing: 1px;
 }
