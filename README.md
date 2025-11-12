@@ -41,7 +41,7 @@ Este projeto é uma **landing page para ONG Coletivo Cultural Olhar da Perifa** 
 
 ## 🚀 Como rodar no Windows (CMD)
 
-1. Entrar na pasta do projeto:
+1. Entrar na pasta do projeto (VERIFIQUE A PASTA):
 
    ```cmd
    cd C:\Users\seu_usuario\Downloads\ong
