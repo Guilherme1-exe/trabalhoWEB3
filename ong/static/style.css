@@ -33,8 +33,14 @@ table td {
   --fonte-corpo: 'Inter', sans-serif;
 }
 
+
+
 /* 1. Fundo do site (Body) em Amarelo Vibrante */
 body {
+  background-image: url(uploads/muro.png);
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
   background-color: var(--cor-amarelo-ong);
   color: var(--cor-texto-escuro); /* Cor padrão do texto */
   /* NOVO: Define a fonte padrão limpa para o site */
