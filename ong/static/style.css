@@ -9,6 +9,8 @@
   font-weight: normal;
   font-style: normal;
 }
+/* Importa a fonte "Inter" para o corpo do texto */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 
 /* Estilos originais (para a tabela do admin) */
@@ -33,14 +35,8 @@ table td {
   --fonte-corpo: 'Inter', sans-serif;
 }
 
-
-
 /* 1. Fundo do site (Body) em Amarelo Vibrante */
 body {
-  background-image: url(uploads/projetos/muro.png);
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: cover;
   background-color: var(--cor-amarelo-ong);
   color: var(--cor-texto-escuro); /* Cor padrão do texto */
   /* NOVO: Define a fonte padrão limpa para o site */
@@ -82,27 +78,24 @@ footer.bg-light small {
 }
 
 
-/* 4. MUDANÇA (IDEIA 1): Removido o fundo branco do container principal */
-.p-5.bg-light, /* Hero da home */
-.card { /* Card de login, cards de projeto */
-  /* O container principal não é mais branco */
+/* 4. "Vibe de Zine" - Estilos dos Cards de Conteúdo */
+.card, /* Card de login (ainda usa a classe) */
+.content-section { /* Nova classe para os blocos da home */
   background-color: var(--cor-branco) !important;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  /* MUDANÇA (Ideia 2): Sombra "dura" de colagem */
+  box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
 }
 
-/* 5. Ajustes no Container principal (padding mantido) */
+/* 5. Ajustes no Container principal (agora é só um wrapper) */
 .container.my-5 {
-  padding-top: 2.5rem !important;
-  padding-bottom: 2.5rem !important;
+  padding-top: 0 !important; /* O padding agora é dos blocos */
+  padding-bottom: 0 !important;
   /* REMOVIDO: background-color: var(--cor-branco) !important; */
 }
 
 /* NOVO (IDEIA 1): "Vibe de Zine" - Cada seção vira um card */
 .content-section {
-  background-color: var(--cor-branco);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   padding: 2.5rem;
   margin-bottom: 2rem; /* Espaçamento entre os "recortes" */
 }
@@ -150,7 +143,7 @@ footer.bg-light small {
   color: var(--cor-branco);
 }
 
-/* 8. MUDANÇA (IDEIA 2): Títulos das Seções com Rabisco */
+/* 8. Títulos das Seções e Cards (com borda roxa) */
 section h2,
 .card-title { /* Título do Login, Sobre, Projetos, etc. */
   color: var(--cor-roxo-ong);
@@ -164,12 +157,7 @@ section h2 {
   padding-bottom: 10px; /* Espaço original */
   margin-bottom: 20px;
   
-  /* REMOVIDO: Sublinhado de "rabisco" roxo 
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8'%3E%3Cpath fill='%238B0099' d='M0,3 Q25,0,50,4 T100,3 L100,6 Q75,8,50,4 T0,5 Z' /%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: bottom left;
-  background-size: 100% auto;
-  */
+  /* REMOVIDO: O "rabisco" foi removido daqui */
 }
 
 /* ===================================
@@ -177,7 +165,6 @@ section h2 {
    =================================== */
 .carousel-item {
   /* Define uma altura máxima para o carrossel */
-  /* Ajuste 500px para o que ficar melhor */
   max-height: 500px; 
   background-color: #333; /* Fundo escuro para o caso da imagem demorar */
 }
@@ -188,7 +175,7 @@ section h2 {
   height: 500px;
   opacity: 0.8; /* Leve escurcida na imagem */
   
-  /* NOVO (IDEIA 3): Filtro de foto */
+  /* "Filtro de foto" */
   filter: grayscale(20%) contrast(110%);
 }
 .carousel-caption h5 {
@@ -211,7 +198,7 @@ section h2 {
   overflow: hidden; /* Garante que nada vaze */
   border-radius: 12px; /* Cantos arredondados */
   
-  /* MUDANÇA (IDEIA 4): Sombra "dura" */
+  /* Sombra "dura" */
   box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
   
   transition: all 0.3s ease-in-out; /* Animação suave */
@@ -227,7 +214,7 @@ section h2 {
   transition: all 0.3s ease-in-out;
   opacity: 0.7; /* Leve transparência na imagem */
 
-  /* NOVO (IDEIA 3): Filtro de foto */
+  /* "Filtro de foto" */
   filter: grayscale(20%) contrast(110%);
 }
 
@@ -239,18 +226,13 @@ section h2 {
   height: 100%;
   background-color: rgba(139, 0, 153, 0.9); /* Roxo 90% transparente */
   color: var(--cor-branco);
-  
-  /* Esconde por padrão */
-  opacity: 0;
-  
-  /* Centraliza o texto */
+  opacity: 0; /* Esconde por padrão */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 20px;
   text-align: center;
-  
   transition: all 0.3s ease-in-out;
 }
 
@@ -286,7 +268,7 @@ section h2 {
   transform: scale(1.05); 
   z-index: 10;
   
-  /* MUDANÇA (IDEIA 4): Sombra "dura" no hover */
+  /* Sombra "dura" no hover */
   box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
 }
 
@@ -322,7 +304,7 @@ section h2 {
 }
 
 /* ===================================
-   NOVOS ESTILOS: Seção "Como Ajudar"
+   NOVOS ESTILOS: Seção "Como Ajudar" e "Contatos"
    =================================== */
 .ajudar-bloco {
   /* Para garantir que fiquem bem em telas menores */
@@ -333,8 +315,9 @@ section h2 {
   /* Define o tamanho do ícone SVG */
   width: 70px;
   height: 70px;
-  /* Pinta o ícone de roxo */
-  stroke: var(--cor-roxo-ong);
+  /* MUDANÇA (Ideia 3): Ícones "rabiscados" usam FILL */
+  fill: var(--cor-roxo-ong);
+  stroke: none; /* Remove a borda */
   margin-bottom: 1rem;
 }
 
@@ -344,4 +327,35 @@ section h2 {
   color: var(--cor-roxo-ong);
   font-size: 1.8rem;
   letter-spacing: 1px;
+}
+
+/* ===================================
+   NOVO: Estilos da Galeria "Nossa Galera" (Ideia 4)
+   =================================== */
+.gallery-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  /* Sombra "dura" de recorte */
+  box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+  /* Força a proporção quadrada */
+  height: 0;
+  padding-bottom: 100%; 
+}
+
+.gallery-card img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  
+  /* Filtro de foto */
+  filter: grayscale(20%) contrast(110%);
+}
+
+.gallery-card:hover img {
+  transform: scale(1.1);
 }
