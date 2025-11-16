@@ -9,15 +9,167 @@
   </div>
 </div>
 
-<!-- 1. Gerenciador de Carrossel -->
+<!-- 
+  A página de admin agora está organizada na mesma ordem da Página Inicial:
+  1. Fundo (Global)
+  2. Carrossel (Home #1)
+  3. Seções Personalizadas (Home #2) 
+  4. Sobre (Home #3)
+  5. Projetos (Home #4)
+  6. Interessados (Formulário do "Como Ajudar", Home #5)
+  7. Contatos (Home #6)
+  8. Galeria "Nossa Galera" (Home #7) - NOVO
+  9. Membros (Admin-only)
+-->
+
+<!-- 1. Gerenciador de Fundo do Site (Configuração Global) -->
 <div class="card shadow-sm mb-4">
   <div class="card-body">
-    <h4 class="card-title">Gerenciar Carrossel (Página Inicial)</h4>
+    <h4 class="card-title">1. Gerenciar Fundo do Site (Global)</h4>
     
-<!-- 2. Gerenciador de Texto e Imagem "Sobre" -->
+    <!-- Prévia da Imagem Atual -->
+    <div class="mb-3">
+      <label class="form-label">Fundo Atual:</label>
+      <div>
+        {% if background_image_filename %}
+          <img src="{{ url_for('static', filename='uploads/' + background_image_filename) }}" 
+               alt="Imagem de Fundo" 
+               style="height: 100px; width: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+        {% else %}
+          <div style="height: 100px; width: 150px; background-color: var(--cor-amarelo-ong); border-radius: 8px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.9rem; color: #333;">
+            Amarelo Sólido<br>(Padrão)
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Formulário de Upload -->
+    <form action="{{ url_for('admin_upload_background') }}" method="POST" enctype="multipart/form-data" class="border-bottom pb-3 mb-3">
+      <div class="input-group">
+        <input type="file" class="form-control" name="file" id="bg_file" accept="image/*" required>
+        <button class="btn btn-success" type="submit">Trocar Fundo</button>
+      </div>
+      <small class="form-text text-muted">
+        <b>Tamanho:</b> 1920x1080px. <b>Importante:</b> Use uma imagem sutil (textura ou padrão) e otimizada (leve, < 500KB).
+      </small>
+    </form>
+    
+    <!-- Formulário de Remoção -->
+    {% if background_image_filename %}
+      <form action="{{ url_for('admin_delete_background') }}" method="POST" onsubmit="return confirm('Deseja remover a imagem de fundo e voltar para o amarelo sólido?');">
+        <button type="submit" class="btn btn-sm btn-outline-danger">Remover Imagem (Voltar para Amarelo)</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+
+<!-- 2. Gerenciador de Carrossel (Home #1) -->
 <div class="card shadow-sm mb-4">
   <div class="card-body">
-    <h4 class="card-title">Editar Seção "Sobre a ONG"</h4>
+    <h4 class="card-title">2. Gerenciar Carrossel (Banner)</h4>
+    
+    <!-- Formulário de Upload -->
+    <form action="{{ url_for('admin_upload') }}" method="POST" enctype="multipart/form-data" class="border-bottom pb-3 mb-3">
+      <div class="input-group">
+        <input type="file" class="form-control" name="file" id="file" accept="image/*" required>
+        <button class="btn btn-success" type="submit">Enviar Imagem</button>
+      </div>
+      <small class="form-text text-muted">Tamanho recomendado: 1920x1080 pixels (proporção 16:9)</small>
+    </form>
+    
+    <!-- Imagens Atuais -->
+    <h5>Imagens Atuais no Carrossel</h5>
+    {% if carousel_images %}
+      <div class="row row-cols-2 row-cols-md-4 g-3">
+        {% for image in carousel_images %}
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='uploads/' + image) }}" class="card-img-top" style="height: 100px; object-fit: cover;" alt="Imagem do Carrossel">
+              <div class="card-body p-2 text-center">
+                <form action="{{ url_for('admin_delete_image', filename=image) }}" method="POST" onsubmit="return confirm('Confirmar exclusão desta imagem?');">
+                  <button class="btn btn-sm btn-outline-danger w-100">Excluir</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Nenhuma imagem no carrossel. Envie uma acima.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- 3. Gerenciador de Seções Personalizadas (Home #2) -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="card-title">3. Gerenciar Seções Personalizadas</h4>
+    
+    <!-- Formulário de Adicionar Seção -->
+    <form action="{{ url_for('admin_add_section') }}" method="POST" enctype="multipart/form-data" class="border-bottom pb-3 mb-3">
+      <h5 class="mb-3">Adicionar Nova Seção</h5>
+      <div class="mb-3">
+        <label for="sec_title" class="form-label">Título da Seção (Ex: "Nossa História", "Formulário de Inscrição") *</label>
+        <input type="text" class="form-control" id="sec_title" name="title" required>
+        <small class="form-text text-muted">Isso também criará o novo link no menu superior.</small>
+      </div>
+      <div class="mb-3">
+        <label for="sec_text" class="form-label">Texto da Seção *</label>
+        <textarea class="form-control" name="text_content" id="sec_text" rows="5" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="sec_file" class="form-label">Imagem da Seção (lado esquerdo) *</label>
+        <input type="file" class="form-control" id="sec_file" name="file" accept="image/*" required>
+        <small class="form-text text-muted">Tamanho recomendado: 600x450 pixels (proporção 4:3)</small>
+      </div>
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-success px-5">Adicionar Nova Seção</button>
+      </div>
+    </form>
+    
+    <!-- Lista de Seções Atuais -->
+    <h5>Seções Personalizadas Atuais</h5>
+    {% if custom_sections %}
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Título (Link do Menu)</th>
+              <th>Texto (Início)</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in custom_sections %}
+            <tr>
+              <td>
+                <img src="{{ url_for('static', filename='uploads/custom/' + s.image_filename) }}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;" alt="Foto da Seção">
+              </td>
+              <td>{{ s.title }}</td>
+              <td style="max-width:300px;">{{ s.text_content[:80] }}...</td> <!-- Mostra os primeiros 80 caracteres -->
+              <td class="text-nowrap">
+                <!-- Botão Excluir Seção -->
+                <form action="{{ url_for('admin_delete_section', section_id=s.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirmar exclusão da seção {{ s.title }}?');">
+                  <button class="btn btn-sm btn-danger">Excluir</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>Nenhuma seção personalizada criada. Adicione uma acima.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- 4. Gerenciador de Texto e Imagem "Sobre" (Home #3) -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="card-title">4. Editar Seção "Sobre a ONG"</h4>
     
     <!-- Formulário de Texto -->
     <form action="{{ url_for('admin_update_sobre') }}" method="POST" class="border-bottom pb-3 mb-3">
@@ -28,7 +180,7 @@
       <button type="submit" class="btn btn-success">Salvar Texto "Sobre"</button>
     </form>
     
-    <!-- NOVO: Formulário de Imagem -->
+    <!-- Formulário de Imagem -->
     <h5 class="mb-3 mt-4">Editar Imagem</h5>
     
     <!-- Prévia da Imagem Atual -->
@@ -59,91 +211,10 @@
   </div>
 </div>
 
-<!-- 3. Gerenciador de Contatos (NOVO) -->
+<!-- 5. Gerenciador de Projetos (Home #4) -->
 <div class="card shadow-sm mb-4">
   <div class="card-body">
-    <h4 class="card-title">Gerenciar Informações de Contato</h4>
-    <form action="{{ url_for('admin_update_contatos') }}" method="POST">
-      <div class="mb-3">
-        <label for="contato_endereco" class="form-label">Endereço</label>
-        <input type="text" class="form-control" id="contato_endereco" name="contato_endereco" value="{{ contatos.endereco }}">
-      </div>
-      <div class="mb-3">
-        <label for="contato_email" class="form-label">E-mail</label>
-        <input type="email" class="form-control" id="contato_email" name="contato_email" value="{{ contatos.email }}">
-      </div>
-      <div class="mb-3">
-        <label for="contato_telefones" class="form-label">Telefones</label>
-        <input type="text" class="form-control" id="contato_telefones" name="contato_telefones" value="{{ contatos.telefones }}">
-        <small class="form-text text-muted">
-          Importante: Separe os números de telefone por vírgula ( , )
-        </small>
-      </div>
-      <button type="submit" class="btn btn-success">Salvar Contatos</button>
-    </form>
-  </div>
-</div>
-
-<!-- 4. Gerenciador de Membros da ONG -->
-<div class="card shadow-sm mb-4">
-  <div class="card-body">
-    <h4 class="card-title">Gerenciar Membros da ONG</h4>
-    
-    <!-- Formulário de Adicionar Membro -->
-    <form action="{{ url_for('admin_add_membro') }}" method="POST" class="border-bottom pb-3 mb-3">
-      <h5 class="mb-3">Adicionar Novo Membro</h5>
-      <div class="row g-3">
-        <div class="col-md-5">
-          <label for="membro_nome" class="form-label">Nome *</label>
-          <input type="text" class="form-control" id="membro_nome" name="nome" required>
-        </div>
-        <div class="col-md-5">
-          <label for="membro_email" class="form-label">E-mail *</label>
-          <input type="email" class="form-control" id="membro_email" name="email" required>
-        </div>
-        <div class="col-md-2 d-flex align-items-end">
-          <button type="submit" class="btn btn-success w-100">Adicionar</button>
-        </div>
-      </div>
-    </form>
-    
-    <!-- Lista de Membros Atuais -->
-    <h5>Membros Atuais</h5>
-    {% if membros %}
-      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-        <table class="table table-striped table-hover table-sm">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for membro in membros %}
-            <tr>
-              <td>{{ membro.nome }}</td>
-              <td>{{ membro.email }}</td>
-              <td>
-                <form action="{{ url_for('admin_delete_membro', membro_id=membro.id) }}" method="POST" onsubmit="return confirm('Excluir o membro {{ membro.nome }}? Isso o removerá de todas as equipes.');">
-                  <button class="btn btn-sm btn-outline-danger">Excluir</button>
-                </form>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    {% else %}
-      <p>Nenhum membro cadastrado. Adicione um acima.</p>
-    {% endif %}
-  </div>
-</div>
-
-<!-- 5. Gerenciador de Projetos -->
-<div class="card shadow-sm mb-4">
-  <div class="card-body">
-    <h4 class="card-title">Gerenciar Projetos</h4>
+    <h4 class="card-title">5. Gerenciar Projetos</h4>
     
     <!-- Formulário de Adicionar Projeto -->
     <form action="{{ url_for('admin_add_projeto') }}" method="POST" enctype="multipart/form-data" class="border-bottom pb-3 mb-3">
@@ -197,7 +268,7 @@
                 {% endif %}
               </td>
               <td class="text-nowrap">
-                <!-- Botão Gerenciar Equipe (NOVO) -->
+                <!-- Botão Gerenciar Equipe -->
                 <a href="{{ url_for('admin_gerenciar_equipe', projeto_id=p.id) }}" class="btn btn-sm btn-primary">
                   Gerenciar Equipe
                 </a>
@@ -218,10 +289,10 @@
   </div>
 </div>
 
-<!-- 6. Tabela de Interessados (Formulário de Contato) -->
+<!-- 6. Tabela de Interessados (Formulário de "Como Ajudar", Home #5) -->
 <div class="card shadow-sm mb-4">
   <div class="card-body">
-    <h4 class="card-title">Interessados (Formulário de Contato)</h4>
+    <h4 class="card-title">6. Interessados (Formulário "Como Ajudar")</h4>
     {% if entries %}
       <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -257,6 +328,125 @@
       </div>
     {% else %}
       <p>Nenhum registro encontrado.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- 7. Gerenciador de Contatos (Home #6) -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="card-title">7. Gerenciar Informações de Contato</h4>
+    <form action="{{ url_for('admin_update_contatos') }}" method="POST">
+      <div class="mb-3">
+        <label for="contato_endereco" class="form-label">Endereço</label>
+        <input type="text" class="form-control" id="contato_endereco" name="contato_endereco" value="{{ contatos.endereco }}">
+      </div>
+      <div class="mb-3">
+        <label for="contato_email" class="form-label">E-mail</label>
+        <input type="email" class="form-control" id="contato_email" name="contato_email" value="{{ contatos.email }}">
+      </div>
+      <div class="mb-3">
+        <label for="contato_telefones" class="form-label">Telefones</label>
+        <input type="text" class="form-control" id="contato_telefones" name="contato_telefones" value="{{ contatos.telefones }}">
+        <small class="form-text text-muted">
+          Importante: Separe os números de telefone por vírgula ( , )
+        </small>
+      </div>
+      <button type="submit" class="btn btn-success">Salvar Contatos</button>
+    </form>
+  </div>
+</div>
+
+<!-- 8. NOVO: Gerenciador da Galeria "Nossa Galera" (Home #7) -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="card-title">8. Gerenciar Galeria "Nossa Galera"</h4>
+    
+    <!-- Formulário de Upload -->
+    <form action="{{ url_for('admin_add_gallery_image') }}" method="POST" enctype="multipart/form-data" class="border-bottom pb-3 mb-3">
+      <div class="input-group">
+        <input type="file" class="form-control" name="file" id="gallery_file" accept="image/*" required>
+        <button class="btn btn-success" type="submit">Adicionar Foto à Galeria</button>
+      </div>
+      <small class="form-text text-muted">Tamanho recomendado: 400x400 pixels (quadrado)</small>
+    </form>
+    
+    <!-- Imagens Atuais na Galeria -->
+    <h5>Fotos Atuais na Galeria</h5>
+    {% if gallery_images %}
+      <div class="row row-cols-2 row-cols-md-4 g-3">
+        {% for image in gallery_images %}
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='uploads/gallery/' + image.filename) }}" class="card-img-top" style="height: 100px; object-fit: cover;" alt="Foto da Galeria">
+              <div class="card-body p-2 text-center">
+                <form action="{{ url_for('admin_delete_gallery_image', image_id=image.id) }}" method="POST" onsubmit="return confirm('Confirmar exclusão desta foto da galeria?');">
+                  <button class="btn btn-sm btn-outline-danger w-100">Excluir</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Nenhuma foto na galeria. Envie uma acima.</p>
+    {% endif %}
+  </div>
+</div>
+
+
+<!-- 9. Gerenciador de Membros da ONG (Admin-only) -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="card-title">9. Gerenciar Membros da ONG (Interno)</h4>
+    
+    <!-- Formulário de Adicionar Membro -->
+    <form action="{{ url_for('admin_add_membro') }}" method="POST" class="border-bottom pb-3 mb-3">
+      <h5 class="mb-3">Adicionar Novo Membro</h5>
+      <div class="row g-3">
+        <div class="col-md-5">
+          <label for="membro_nome" class="form-label">Nome *</label>
+          <input type="text" class="form-control" id="membro_nome" name="nome" required>
+        </div>
+        <div class="col-md-5">
+          <label for="membro_email" class="form-label">E-mail *</label>
+          <input type="email" class="form-control" id="membro_email" name="email" required>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="submit" class="btn btn-success w-100">Adicionar</button>
+        </div>
+      </div>
+    </form>
+    
+    <!-- Lista de Membros Atuais -->
+    <h5>Membros Atuais</h5>
+    {% if membros %}
+      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+        <table class="table table-striped table-hover table-sm">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for membro in membros %}
+            <tr>
+              <td>{{ membro.nome }}</td>
+              <td>{{ membro.email }}</td>
+              <td>
+                <form action="{{ url_for('admin_delete_membro', membro_id=membro.id) }}" method="POST" onsubmit="return confirm('Excluir o membro {{ membro.nome }}? Isso o removerá de todas as equipes.');">
+                  <button class="btn btn-sm btn-outline-danger">Excluir</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>Nenhum membro cadastrado. Adicione um acima.</p>
     {% endif %}
   </div>
 </div>
