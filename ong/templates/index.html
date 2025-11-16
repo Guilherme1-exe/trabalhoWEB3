@@ -47,6 +47,28 @@
 <!-- Fim do Carrossel -->
 
 
+<!-- NOVO: Loop de Seções Personalizadas -->
+{% for section in custom_sections %}
+<section id="{{ section.slug }}" class="content-section">
+  <h2>{{ section.title }}</h2>
+  
+  <div class="row align-items-center g-4 mt-1">
+    <!-- Coluna da Imagem (Imagem à Esquerda) -->
+    <div class="col-lg-6">
+      <img src="{{ url_for('static', filename='uploads/custom/' + section.image_filename) }}" 
+           class="img-fluid rounded-3 shadow-sm" 
+           alt="Foto da seção {{ section.title }}">
+    </div>
+    <!-- Coluna do Texto -->
+    <div class="col-lg-6">
+      <p class="texto-sobre mb-0">{{ section.text_content }}</p>
+    </div>
+  </div>
+</section>
+{% endfor %}
+<!-- Fim do Loop de Seções Personalizadas -->
+
+
 <!-- Sobre (NOVO LAYOUT 50/50 e card próprio) -->
 <section id="sobre" class="content-section">
   <h2>Sobre a ONG</h2>
@@ -115,35 +137,37 @@
   <!-- 1. Ícones (O que você pediu) -->
   <div class="row text-center mb-5 mt-4">
     
-    <!-- Bloco Voluntário -->
+    <!-- Bloco Voluntário (ÍCONE NOVO) -->
     <div class="col-md-4 ajudar-bloco">
-      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.04 3 5.5l7 7Z"/>
-        <path d="M12 5.36c.88-.8 2.3-1.86 3.4-1.86A3.3 3.3 0 0 1 19 6.8c0 1.9-1.1 3.2-2.3 4.5L12 15.8 7.3 11.3C6.1 10 5 8.7 5 6.8a3.3 3.3 0 0 1 3.5-3.3c1.1 0 2.5 1.06 3.4 1.86Z"/>
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.382 5.684A1.5 1.5 0 0 0 10.5 6.382V10.5H6.382a1.5 1.5 0 0 0-1.2 2.382L10.5 18.264V13.5h4.118a1.5 1.5 0 0 0 1.2-2.382L10.5 5.736v-.052z"/>
+        <path d="M12 21.5a9.5 9.5 0 1 1 0-19 9.5 9.5 0 0 1 0 19zm0-1.5a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM13.882 12H10.5V8.118a1.5 1.5 0 0 0-2.382-1.2L13.5 12.3z"/>
+        <path d="M17.06 9.44a.5.5 0 0 1 .16 1.054l-2.43 1.006a.5.5 0 1 1-.22-.988l2.43-1.006a.5.5 0 0 1 .06-.066zM6.94 14.56a.5.5 0 0 1 .16 1.054l-2.43 1.006a.5.5 0 1 1-.22-.988l2.43-1.006a.5.5 0 0 1 .06-.066z"/>
+        <path fill-rule="evenodd" d="M14.618 10.5H18.5a1.5 1.5 0 0 1 1.2 2.382l-5.382 5.382a1.5 1.5 0 0 1-2.382-1.2V13.5H8.118a1.5 1.5 0 0 1-1.2-2.382l5.382-5.382a1.5 1.5 0 0 1 2.382 1.2v3.56zM13.5 13.118V16.5a1.5 1.5 0 0 0 2.382 1.2L10.5 12.3v.052l.064-.064L13.5 13.118z" clip-rule="evenodd"/>
       </svg>
       <h4 class="ajudar-titulo">Seja Voluntário</h4>
       <p>Doe seu tempo e talento em nossas oficinas, eventos e ações sociais.</p>
     </div>
     
-    <!-- Bloco Doações -->
+    <!-- Bloco Doações (ÍCONE NOVO) -->
     <div class="col-md-4 ajudar-bloco">
-      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 6v12"/>
-        <path d="M16 10s-2 1.5-4 0-4 0-4 0"/>
-        <path d="M16 14s-2 1.5-4 0-4 0-4 0"/>
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" d="M10.5 4.5a1.5 1.5 0 0 1 3 0h.5a3 3 0 0 1 3 3v.5a1.5 1.5 0 0 1 0 3v.5a3 3 0 0 1-3 3h-.5a1.5 1.5 0 0 1-3 0h-.5a3 3 0 0 1-3-3v-.5a1.5 1.5 0 1 1 0-3v-.5a3 3 0 0 1 3-3h.5zm.5 4.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z" clip-rule="evenodd"/>
+        <path d="M12 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm1.5-1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm0 3a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+        <path d="M12 1.5a10.5 10.5 0 1 1 0 21 10.5 10.5 0 0 1 0-21zm0 1.5a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/>
       </svg>
       <h4 class="ajudar-titulo">Faça uma Doação</h4>
       <p>Sua contribuição financia materiais, lanches e transporte para os alunos.</p>
     </div>
     
-    <!-- Bloco Parceria -->
+    <!-- Bloco Parceria (ÍCONE NOVO) -->
     <div class="col-md-4 ajudar-bloco">
-      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 18.25a2.5 2.5 0 0 0-2.3-2.48c-1.4-.13-2.6-.9-3.2-2.12a2.5 2.5 0 0 0-4.18-2.08L3 16.25"/>
-        <path d="m3 14 3 3 3-3"/>
-        <path d="M6 18.25a2.5 2.5 0 0 1 2.3-2.48c1.4-.13-2.6-.9-3.2-2.12a2.5 2.5 0 0 1 4.18-2.08L21 16.25"/>
-        <path d="m21 14-3 3-3-3"/>
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M13.623 11.614l.447-.447a2.25 2.25 0 0 1 3.182 0l2.235 2.235a2.25 2.25 0 0 1 0 3.182l-.447.447-3.182-3.182.765-.765z"/>
+        <path d="M10.377 12.386l-.447.447a2.25 2.25 0 0 1-3.182 0L4.513 10.6a2.25 2.25 0 0 1 0-3.182l.447-.447 3.182 3.182-.765.765z"/>
+        <path d="M8.868 15.632l-3.182-3.182.447-.447a2.25 2.25 0 0 1 3.182 0l2.235 2.235a2.25 2.25 0 0 1 0 3.182l-.447.447z"/>
+        <path d="M15.132 8.368l3.182 3.182-.447.447a2.25 2.25 0 0 1-3.182 0L12.45 9.762a2.25 2.25 0 0 1 0-3.182l.447-.447z"/>
+        <path d="M11.25 10.75a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
       </svg>
       <h4 class="ajudar-titulo">Seja um Parceiro</h4>
       <p>Sua empresa pode patrocinar projetos, doar equipamentos ou apoiar eventos.</p>
@@ -192,39 +216,54 @@
 <!-- Fim da Seção "Como Ajudar" -->
 
 
-<!-- NOVA Seção "Contatos" (e card próprio) -->
+<!-- NOVO: Seção Galeria "Nossa Galera" -->
+{% if gallery_images %}
+<section id="galeria" class="content-section">
+  <h2>Nossa Galera</h2>
+  
+  <div class="row row-cols-2 row-cols-md-4 g-3 mt-1">
+    {% for image in gallery_images %}
+    <div class="col">
+      <div class="gallery-card">
+        <img src="{{ url_for('static', filename='uploads/gallery/' + image.filename) }}" alt="Foto da galeria Olhar da Perifa">
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+</section>
+{% endif %}
+<!-- Fim da Seção "Galeria" -->
+
+
+<!-- Seção "Contatos" (e card próprio) -->
 <section id="contatos" class="content-section">
   <h2>Contatos</h2>
   
   <div class="row text-center mb-4 mt-4">
     
-    <!-- Bloco Endereço -->
+    <!-- Bloco Endereço (ÍCONE NOVO) -->
     <div class="col-md-4 ajudar-bloco">
-      <!-- Ícone de Mapa (Map Pin) -->
-      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-        <circle cx="12" cy="10" r="3"/>
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.001 2c-4.411 0-8 3.589-8 8 0 4.41 8 12 8 12s8-7.59 8-12c0-4.411-3.589-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
       </svg>
       <h4 class="ajudar-titulo">Endereço</h4>
       <p>{{ contatos.endereco }}</p>
     </div>
     
-    <!-- Bloco E-mail -->
+    <!-- Bloco E-mail (ÍCONE NOVO) -->
     <div class="col-md-4 ajudar-bloco">
-      <!-- Ícone de E-mail (Envelope) -->
-      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect width="20" height="16" x="2" y="4" rx="2"/>
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M2.5 4.5h19a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5h-19a1.5 1.5 0 0 1-1.5-1.5v-12a1.5 1.5 0 0 1 1.5-1.5zM3.684 6L12 11.897 20.316 6H3.684zM21 17.65V7.496l-8.435 5.51a.75.75 0 0 1-.806-.002L3 7.493V17.65c0 .083.067.15.15.15h17.7a.15.15 0 0 0 .15-.15z"/>
       </svg>
       <h4 class="ajudar-titulo">E-mail</h4>
       <p>{{ contatos.email }}</p>
     </div>
     
-    <!-- Bloco Telefones -->
+    <!-- Bloco Telefones (ÍCONE NOVO) -->
     <div class="col-md-4 ajudar-bloco">
-      <!-- Ícone de Telefone (Phone) -->
-      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      <svg class="ajudar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3.5 1.5a1.5 1.5 0 0 1 1.5 1.5v.135c.42.046.83.13 1.226.248a.75.75 0 0 1 .531.7l.63 2.1a.75.75 0 0 1-.225.795l-1.4 1.12a10.45 10.45 0 0 0 4.545 4.545l1.12-1.4a.75.75 0 0 1 .795-.225l2.1.63a.75.75 0 0 1 .7.53c.119.397.203.807.25 1.227h.136a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5c-10.763 0-19.5-8.737-19.5-19.5A1.5 1.5 0 0 1 3.5 1.5zm1.5 1.5a.75.75 0 0 0 0 1.5c8.008 0 14.5 6.492 14.5 14.5a.75.75 0 0 0 1.5 0c0-8.837-7.163-16-16-16z"/>
       </svg>
       <h4 class="ajudar-titulo">Telefones</h4>
       
