@@ -13,6 +13,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Lógica do Fundo Dinâmico (Corrigida) -->
+    {% if background_image_filename and background_image_filename|length > 4 %}
+    <style>
+      body {
+        /* Define a imagem de fundo */
+        background-image: url("{{ url_for('static', filename='uploads/' + background_image_filename) }}");
+        
+        /* Cobre a tela inteira */
+        background-size: cover;
+        
+        /* Centraliza a imagem */
+        background-position: center center;
+        
+        /* A imagem fica fixa e o conteúdo rola "por cima" */
+        background-attachment: fixed;
+        
+        /* Garante que o amarelo não apareça por baixo */
+        background-color: transparent; 
+      }
+    </style>
+    {% endif %}
+    <!-- Fim da Lógica do Fundo -->
+    
   </head>
   <body>
     <!-- Navbar -->
@@ -29,20 +53,23 @@
               Lógica de Links Dinâmicos:
               Verifica se o caminho atual (request.path) é a página inicial (url_for('index')).
             -->
-            {% if request.path == url_for('index') %}
-              <!-- Se ESTIVER na Home, usar âncoras simples -->
-              <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
-              <li class="nav-item"><a class="nav-link" href="#projetos">Projetos</a></li>
-              <li class="nav-item"><a class="nav-link" href="#ajudar">Como Ajudar</a></li>
-              <li class="nav-item"><a class="nav-link" href="#contatos">Contatos</a></li> <!-- NOVO -->
-            {% else %}
-              <!-- Se NÃO ESTIVER na Home (ex: /admin, /login), usar links completos -->
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#sobre">Sobre</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#projetos">Projetos</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#ajudar">Como Ajudar</a></li>
-              <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}#contatos">Contatos</a></li> <!-- NOVO -->
-            {% endif %}
-            <!-- Fim da Lógica -->
+            {% set is_home = (request.path == url_for('index')) %}
+            
+            <!-- NOVO: Loop de Seções Personalizadas -->
+            {% for section in custom_sections %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('index') if not is_home else '' }}#{{ section.slug }}">
+                  {{ section.title }}
+                </a>
+              </li>
+            {% endfor %}
+            <!-- Fim do Loop -->
+
+            <!-- Links Estáticos -->
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('index') if not is_home else '' }}#sobre">Sobre</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('index') if not is_home else '' }}#projetos">Projetos</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('index') if not is_home else '' }}#ajudar">Como Ajudar</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('index') if not is_home else '' }}#contatos">Contatos</a></li>
             
             <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Admin</a></li>
           </ul>
