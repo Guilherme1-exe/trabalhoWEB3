@@ -1,0 +1,26 @@
+Ambiente Virtual do Python
+
+NUNCA envie sua pasta venv!
+
+venv/
+*.venv/
+.venv/
+
+Arquivos do Python
+
+pycache/
+*.pyc
+*.pyo
+
+Banco de Dados
+
+Não envie seu banco local. O servidor deve criar o seu próprio.
+
+*.db
+*.sqlite
+*.sqlite3
+
+Arquivos de Sistema
+
+.DS_Store
+Thumbs.db
