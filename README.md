@@ -25,9 +25,6 @@ Este projeto é uma **landing page para ONG Coletivo Cultural Olhar da Perifa** 
 * ✅ **Responsividade** usando **Bootstrap**
 * ✅ **Login/Senha padrão**:
 
-  * Usuário: `admin`
-  * Senha: `senha123`
-
 ---
 
 ## ⚙️ Tecnologias usadas
